@@ -1,17 +1,12 @@
 import 'dotenv/config'
+import './libs/cache';
+
 import express from 'express';
-import Redis from 'ioredis'
+import { RateLimit } from './middleware/rate-limit';
 
 const app = express();
-const redis = new Redis({
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT),
-  username: process.env.REDIS_USERNAME,
-  password: process.env.REDIS_PASSWORD
-});
 
-
-app.get("/", async (_, response) => {
+app.get("/", RateLimit, async (_, response) => {
   return response.json({
     hello: 'world'
   })
