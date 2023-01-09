@@ -8,7 +8,9 @@ export async function RateLimit(request: Request, response: Response, next: Next
   if (requestsByIp) {
     if (requestsByIp.split(",").length >= 5) {
       redis.expire(ip.toString(), 30)
-      return response.send("Rate limit")
+      return response.status(429).json({
+        message: "Rate Limit"
+      })
     }
     redis.set(ip.toString(), Array(requestsByIp, Date.now().toString()).toString())
     redis.expire(ip.toString(), 5)
@@ -16,6 +18,5 @@ export async function RateLimit(request: Request, response: Response, next: Next
     redis.set(ip.toString(), Date.now().toString())
     redis.expire(ip.toString(), 5)
   }
-  console.log(requestsByIp)
   next()
 }
