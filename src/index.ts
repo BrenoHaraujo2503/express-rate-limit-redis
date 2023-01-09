@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express';
 const app = express();
 
@@ -7,6 +8,6 @@ app.get("/", (_, response) => {
   })
 })
 
-app.listen(3333, () => {
-  console.log(`Server is running in http://localhost:3333/`)
+app.listen(process.env.PORT || 3333, () => {
+  console.log(`Server is running in http://localhost:${process.env.PORT || 3333}`)
 })
